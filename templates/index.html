@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="header-actions">
+        <h1>Student Performance Tracker</h1>
+        <div>
+            <a href="{{ url_for('add_student') }}" class="btn">Add Student</a>
+            <a href="{{ url_for('view_averages') }}" class="btn">Class Analytics</a>
+        </div>
+    </div>
+
+    <div class="export-section">
+        <h3>Data Backup</h3>
+        <a href="{{ url_for('export_data') }}" class="btn btn-success"
+           onclick="return confirmAction('Export all student data to backup file?')">
+           Export Data Backup
+        </a>
+        <p><small>Creates a timestamped text file in backups/ directory</small></p>
+    </div>
+    
+    {% if students %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Roll Number</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                    <tr>
+                        <td>{{ student.name }}</td>
+                        <td>{{ student.roll_number }}</td>
+                        <td class="action-group">
+                            <a href="{{ url_for('view_student', student_id=student.id) }}" class="btn btn-sm">View</a>
+                            <a href="{{ url_for('edit_student', student_id=student.id) }}" class="btn btn-sm">Edit</a>
+                            <a href="{{ url_for('delete_student', student_id=student.id) }}" 
+                               class="btn btn-sm btn-danger"
+                               onclick="return confirmAction('Delete this student and ALL their grades?')">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No students found. Add your first student!</p>
+    {% endif %}
+{% endblock %}

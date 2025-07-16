@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="header-actions">
+        <h1>{{ student.name }} <small>({{ student.roll_number }})</small></h1>
+        <div class="action-group">
+            <a href="{{ url_for('edit_student', student_id=student.id) }}" class="btn">Edit Student</a>
+            <a href="{{ url_for('delete_student', student_id=student.id) }}" 
+               class="btn btn-danger"
+               onclick="return confirmAction('Delete this student and ALL their grades?')">
+                Delete Student
+            </a>
+        </div>
+    </div>
+
+    {% include '_grade_section.html' %}
+{% endblock %}

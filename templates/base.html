@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Tracker</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 1000px; margin: 0 auto; padding: 20px; }
+        .alert { padding: 10px; margin: 10px 0; border-radius: 4px; }
+        .alert-success { background: #d4edda; color: #155724; }
+        .alert-error { background: #f8d7da; color: #721c24; }
+        .btn { display: inline-block; padding: 8px 16px; background: #007bff; color: white; 
+               text-decoration: none; border-radius: 4px; margin: 5px; border: none; cursor: pointer; }
+        .btn-danger { background: #dc3545; }
+        .btn-success { background: #28a745; }
+        .btn-sm { padding: 4px 8px; font-size: 0.9rem; }
+        form { margin-top: 20px; }
+        input, select { padding: 8px; margin: 5px 0; width: 100%; max-width: 300px; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .action-group { display: flex; gap: 5px; }
+        .header-actions { display: flex; justify-content: space-between; align-items: center; }
+        .export-section { margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </div>
+
+    <script>
+        function confirmAction(msg) {
+            return confirm(msg || 'Are you sure?');
+        }
+    </script>
+</body>
+</html>

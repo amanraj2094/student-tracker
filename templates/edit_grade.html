@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Edit Grade for {{ grade.student.name }}</h1>
+    <form method="POST">
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" name="subject" value="{{ grade.subject }}" required>
+        
+        <label for="score">Score (0-100):</label>
+        <input type="number" id="score" name="score" value="{{ grade.score }}" min="0" max="100" step="0.1" required>
+        
+        <button type="submit" class="btn">Update Grade</button>
+        <a href="{{ url_for('view_student', student_id=grade.student_id) }}" class="btn">Cancel</a>
+    </form>
+{% endblock %}

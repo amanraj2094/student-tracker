@@ -1,0 +1,35 @@
+<div style="margin-top: 20px;">
+    <a href="{{ url_for('add_grade', student_id=student.id) }}" class="btn">Add Grade</a>
+    <a href="{{ url_for('index') }}" class="btn">Back to All Students</a>
+</div>
+
+<h2>Grades</h2>
+{% if student.grades %}
+    <table>
+        <thead>
+            <tr>
+                <th>Subject</th>
+                <th>Score</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for grade in student.grades %}
+                <tr>
+                    <td>{{ grade.subject }}</td>
+                    <td>{{ grade.score }}</td>
+                    <td class="action-group">
+                        <a href="{{ url_for('edit_grade', grade_id=grade.id) }}" class="btn btn-sm">Edit</a>
+                        <a href="{{ url_for('delete_grade', grade_id=grade.id) }}" 
+                           class="btn btn-sm btn-danger"
+                           onclick="return confirmAction('Delete this grade?')">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No grades recorded yet.</p>
+{% endif %}
