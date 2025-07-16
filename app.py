@@ -1,23 +1,35 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash
-from models import db, Student, Grade
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
 from datetime import datetime
 from dotenv import load_dotenv
 
-# Initialize environment
+# Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
 
-# Database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
-    'DATABASE_URL', 'sqlite:///student_tracker.db'
-).replace('postgres://', 'postgresql://')
+# Database configuration (with Render compatibility)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///student_tracker.db').replace(
+    'postgres://', 'postgresql://')  # Critical for Render
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key')
 
-db.init_app(app)
+db = SQLAlchemy(app)
+
+# ===== Models =====
+class Student(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    roll_number = db.Column(db.String(20), unique=True, nullable=False)
+    grades = db.relationship('Grade', backref='student', lazy=True, cascade="all, delete-orphan")
+
+class Grade(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, db.ForeignKey('student.id'), nullable=False)
+    subject = db.Column(db.String(50), nullable=False)
+    score = db.Column(db.Float, nullable=False)
 
 # ===== Routes =====
 @app.route('/')
@@ -162,6 +174,8 @@ def export_data():
         filename = f"student_backup_{timestamp}.txt"
         backup_path = os.path.join('backups', filename)
         
+        os.makedirs('backups', exist_ok=True)
+        
         with open(backup_path, 'w') as f:
             f.write("=== STUDENT PERFORMANCE TRACKER BACKUP ===\n")
             f.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
@@ -184,7 +198,9 @@ def export_data():
     
     return redirect(url_for('index'))
 
+# ===== Database Initialization =====
+with app.app_context():
+    db.create_all()
+
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
     app.run(debug=True)
