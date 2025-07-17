@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Performer | Student Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fc;
+            font-family: 'Nunito', sans-serif;
+        }
+        .medal-icon {
+            font-size: 3rem;
+            color: gold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow">
+                    <div class="card-header bg-success text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-trophy me-2"></i>Top Performer in {{ subject }}
+                        </h4>
+                    </div>
+                    <div class="card-body text-center py-5">
+                        {% if topper %}
+                            <i class="fas fa-medal medal-icon mb-4"></i>
+                            <h2 class="text-success">{{ topper['name'] }}</h2>
+                            <h1 class="display-1">{{ topper['grade'] }}%</h1>
+                            <p class="text-muted">Highest score in {{ subject }}</p>
+                        {% else %}
+                            <i class="fas fa-exclamation-circle text-warning mb-4" style="font-size: 3rem;"></i>
+                            <h3>No grades recorded yet</h3>
+                            <p class="text-muted">No students have been graded in {{ subject }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="/" class="btn btn-primary">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

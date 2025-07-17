@@ -1,15 +1,51 @@
-{% extends "base.html" %}
-
-{% block content %}
-    <h1>Edit Grade for {{ grade.student.name }}</h1>
-    <form method="POST">
-        <label for="subject">Subject:</label>
-        <input type="text" id="subject" name="subject" value="{{ grade.subject }}" required>
-        
-        <label for="score">Score (0-100):</label>
-        <input type="number" id="score" name="score" value="{{ grade.score }}" min="0" max="100" step="0.1" required>
-        
-        <button type="submit" class="btn">Update Grade</button>
-        <a href="{{ url_for('view_student', student_id=grade.student_id) }}" class="btn">Cancel</a>
-    </form>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Grade</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card shadow">
+                    <div class="card-header bg-warning text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-edit me-2"></i>Edit Grade
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            <div class="mb-3">
+                                <label class="form-label">Subject</label>
+                                <input type="text" class="form-control" value="{{ subject }}" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Roll Number</label>
+                                <input type="text" class="form-control" value="{{ roll_number }}" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Grade (0-100)</label>
+                                <input type="number" class="form-control" name="grade" 
+                                       value="{{ current_grade }}" min="0" max="100" step="0.01" required>
+                            </div>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="/student/{{ roll_number }}" class="btn btn-secondary me-md-2">
+                                    <i class="fas fa-times me-1"></i>Cancel
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-1"></i>Update Grade
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
